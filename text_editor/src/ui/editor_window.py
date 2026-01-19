@@ -8,12 +8,9 @@ class TextEditorApp:
         self.root = root
         self.root.title("Text Editor")
         self.root.geometry("1000x700")
-        
-        # Инициализируем список вкладок ДО создания первой вкладки
         self.tabs = []
         self.current_file = None
         
-        # Темы
         self.themes = {
             "Светлая": {
                 "bg": "white",
@@ -32,21 +29,18 @@ class TextEditorApp:
                 "status_bg": "#333333"
             }
         }
+        
         self.current_theme = "Светлая"
         
-        # Шрифты
         self.current_font_family = "Consolas"
         self.current_font_size = 12
         
-        # Строка состояния (внизу)
         self.status_bar = ttk.Label(root, text="Готово")
         self.status_bar.pack(side="bottom", fill="x")
         
-        # Панель инструментов (над строкой состояния)
         toolbar = ttk.Frame(root)
         toolbar.pack(side="bottom", fill="x")
         
-        # Кнопки на панели инструментов
         ttk.Button(toolbar, text="Новая вкладка", command=self.create_new_tab).pack(side="left", padx=2, pady=2)
         ttk.Button(toolbar, text="Новый", command=self.new_file).pack(side="left", padx=2, pady=2)
         ttk.Button(toolbar, text="Открыть", command=self.open_file).pack(side="left", padx=2, pady=2)
@@ -69,14 +63,11 @@ class TextEditorApp:
         ttk.Separator(toolbar, orient="vertical").pack(side="left", fill="y", padx=5)
         ttk.Button(toolbar, text="Горячие клавиши", command=self.show_shortcuts).pack(side="left", padx=2, pady=2)
         
-        # Вкладки (в центре)
         self.notebook = ttk.Notebook(root)
         self.notebook.pack(fill="both", expand=True, padx=5, pady=5)
         
-        # Создаём первую вкладку
         self.create_new_tab()
         
-        # Меню
         menubar = tk.Menu(root)
         
         file_menu = tk.Menu(menubar, tearoff=0)
@@ -128,7 +119,6 @@ class TextEditorApp:
         
         root.config(menu=menubar)
         
-        # Горячие клавиши
         root.bind("<Control-n>", lambda e: self.new_file())
         root.bind("<Control-o>", lambda e: self.open_file())
         root.bind("<Control-s>", lambda e: self.save_file())
@@ -147,7 +137,6 @@ class TextEditorApp:
         root.bind("<Control-u>", lambda e: self.toggle_format("underline"))
         root.bind("<Control-p>", lambda e: self.print_document())
         
-        # Привязка событий для обновления статуса
         self.current_text_area.bind("<KeyRelease>", self.update_status_bar)
         self.current_text_area.bind("<ButtonRelease-1>", self.update_status_bar)
         
@@ -155,7 +144,6 @@ class TextEditorApp:
         self.apply_theme()
         self.apply_font()
         
-        # Привязка события переключения вкладок
         self.notebook.bind("<<NotebookTabChanged>>", self.on_tab_change)
 
     def create_new_tab(self, file_path=None):
@@ -172,11 +160,9 @@ class TextEditorApp:
         
         self.notebook.add(tab, text=tab_name)
         
-        # Создаём контейнер для текстового поля и прокрутки
         text_frame = tk.Frame(tab)
         text_frame.pack(fill="both", expand=True)
         
-        # Текстовое поле с прокруткой
         text_area = tk.Text(text_frame, wrap="word", undo=True)
         text_area.pack(side="left", fill="both", expand=True)
         
